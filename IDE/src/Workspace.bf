@@ -387,11 +387,7 @@ namespace IDE
 			{
 				get
 				{
-#if BF_PLATFORM_WINDOWS
 					return mEnableRealtimeLeakCheck && mEnableObjectDebugFlags && (mAllocType == .Debug) && (mRuntimeKind != .Disabled);
-#else
-					return false;
-#endif
 				}
 			}
 			
@@ -901,9 +897,9 @@ namespace IDE
                                 data.ConditionalAdd("EnableObjectDebugFlags", options.mEnableObjectDebugFlags, !isRelease);
                                 data.ConditionalAdd("EmitObjectAccessCheck", options.mEmitObjectAccessCheck, !isRelease);
 								data.ConditionalAdd("ArithmeticCheck", options.mArithmeticCheck, false);
-                                data.ConditionalAdd("EnableRealtimeLeakCheck", options.mEnableRealtimeLeakCheck, (platformType == .Windows) && !isRelease);
+                                data.ConditionalAdd("EnableRealtimeLeakCheck", options.mEnableRealtimeLeakCheck, !isRelease);
                                 data.ConditionalAdd("EnableSideStack", options.mEnableSideStack, (platformType == .Windows) && isParanoid);
-								data.ConditionalAdd("AllowHotSwapping", options.mAllowHotSwapping, (platformType == .Windows) && !isRelease);
+								data.ConditionalAdd("AllowHotSwapping", options.mAllowHotSwapping, (platformType == .Windows || platformType == .Linux) && !isRelease);
 								data.ConditionalAdd("AllocStackTraceDepth", options.mAllocStackTraceDepth, 1);
 
 								data.ConditionalAdd("IncrementalBuild", options.mIncrementalBuild, !isRelease);
@@ -1129,9 +1125,9 @@ namespace IDE
 			}
 			else
 			{
-	            options.mEnableRealtimeLeakCheck = false;
+	            options.mEnableRealtimeLeakCheck = !isRelease;
 	            options.mEnableSideStack = false;
-				options.mAllowHotSwapping = false;
+				options.mAllowHotSwapping = (platformType == .Linux) && !isRelease;
 			}
 
 			if (platformType == .Wasm)
@@ -1245,9 +1241,9 @@ namespace IDE
                     options.mEnableObjectDebugFlags = data.GetBool("EnableObjectDebugFlags", !isRelease);
                     options.mEmitObjectAccessCheck = data.GetBool("EmitObjectAccessCheck", !isRelease);
 					options.mArithmeticCheck = data.GetBool("ArithmeticCheck", false);
-                    options.mEnableRealtimeLeakCheck = data.GetBool("EnableRealtimeLeakCheck", (platformType == .Windows) && !isRelease);
+                    options.mEnableRealtimeLeakCheck = data.GetBool("EnableRealtimeLeakCheck", !isRelease);
                     options.mEnableSideStack = data.GetBool("EnableSideStack", (platformType == .Windows) && isParanoid);
-					options.mAllowHotSwapping = data.GetBool("AllowHotSwapping", (platformType == .Windows) && !isRelease);
+					options.mAllowHotSwapping = data.GetBool("AllowHotSwapping", (platformType == .Windows || platformType == .Linux) && !isRelease);
 					options.mAllocStackTraceDepth = data.GetInt("AllocStackTraceDepth", 1);
 
 					options.mIncrementalBuild = data.GetBool("IncrementalBuild", !isRelease);

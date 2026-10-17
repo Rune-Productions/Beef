@@ -11305,7 +11305,7 @@ BF_EXPORT void BF_CALLTYPE BfCompiler_SetOptions(BfCompiler* bfCompiler, BfProje
 // 		{
 // 			options->mErrorString = "Toolset 'Microsoft' is not available on this platform. Consider changing 'Workspace/General/Toolset'.";
 // 		}
-		BF_ASSERT(!options->mEnableRealtimeLeakCheck);
+		// Realtime leak checking is supported on all platforms (it only requires object debug flags).
 #endif
 		options->mEmitObjectAccessCheck = (optionFlags & BfCompilerOptionFlag_EmitObjectAccessCheck) != 0;
 		options->mArithmeticChecks = (optionFlags & BfCompilerOptionFlag_ArithmeticChecks) != 0;

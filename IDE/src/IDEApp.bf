@@ -9291,7 +9291,7 @@ namespace IDE
 			if (workspaceOptions.mReflectKind == .Minimal)
 				macroList.Add("BF_REFLECT_MINIMAL");
 
-			// Only supported on Windows at the moment
+			// Supported on all platforms that build with the debug runtime (requires object debug flags)
 			bool hasLeakCheck = false;
 			if (workspaceOptions.LeakCheckingEnabled)
 			{
