@@ -12,7 +12,7 @@
 
 //#include "boost/lockfree/stack.hpp"
 
-#ifdef BF_PLATFORM_WINDOWS
+#if defined BF_PLATFORM_WINDOWS || defined BF_PLATFORM_LINUX
 #define BF_GC_SUPPORTED
 #endif
 
